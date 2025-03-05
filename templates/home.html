@@ -52,80 +52,37 @@
     </div>
   </div>
 
-  <!-- Featured Stories Section (Horizontal Scrolling) -->
+  <!-- Loop through each category and display books in a horizontal scroll container -->
+  {% for category, books in categories.items() %}
   <section class="story-section">
-    <h3>Featured Stories</h3>
-    <div class="story-cards">
-      <!-- Sample Book Card 1 -->
-      <div class="story-card animate__animated animate__fadeIn">
-        <img src="https://via.placeholder.com/220x140" alt="Book 1">
-        <h5>The Miraculous Secret</h5>
-        <p>When Pedro's friends find a bag of gold...</p>
+    <h3>{{ category }}</h3>
+    <div class="scroll-container">
+      {% for book in books %}
+      <div class="story-card">
+        <!-- Clicking the cover loads the book detail page -->
+        <a href="{{ url_for('book_detail', identifier=book.identifier) }}">
+          <img src="https://archive.org/services/img/{{ book.identifier }}" class="book-cover" alt="Book Cover">
+        </a>
+        <div class="story-info">
+          <h5>{{ book.title }}</h5>
+          <p><strong>Creator:</strong> {{ book.creator[0] if book.creator else "Unknown" }}</p>
+          <p><strong>Subject:</strong>
+            {% if book.subject %}
+              {% if book.subject is iterable %}
+                {{ book.subject | join(', ') }}
+              {% else %}
+                {{ book.subject }}
+              {% endif %}
+            {% else %}
+              N/A
+            {% endif %}
+          </p>
+        </div>
       </div>
-      <!-- Sample Book Card 2 -->
-      <div class="story-card animate__animated animate__fadeIn">
-        <img src="https://via.placeholder.com/220x140" alt="Book 2">
-        <h5>Queen Raggy</h5>
-        <p>The kingdom is rocked by a magical twist...</p>
-      </div>
-      <!-- Sample Book Card 3 -->
-      <div class="story-card animate__animated animate__fadeIn">
-        <img src="https://via.placeholder.com/220x140" alt="Book 3">
-        <h5>Clumsy Gloria</h5>
-        <p>Gloria stumbles into a hilarious adventure...</p>
-      </div>
+      {% endfor %}
     </div>
   </section>
-
-  <!-- 5 Min Stories Section -->
-  <section class="story-section">
-    <h3>5 Min Stories</h3>
-    <div class="story-cards">
-      <!-- Sample Book Card 4 -->
-      <div class="story-card animate__animated animate__fadeIn">
-        <img src="https://via.placeholder.com/220x140" alt="Book 4">
-        <h5>Sindi and the Moon</h5>
-        <p>A brief encounter with a magical moonlit path...</p>
-      </div>
-      <!-- Sample Book Card 5 -->
-      <div class="story-card animate__animated animate__fadeIn">
-        <img src="https://via.placeholder.com/220x140" alt="Book 5">
-        <h5>I Found Magic</h5>
-        <p>A bear explores a lost forest, making a special discovery...</p>
-      </div>
-      <!-- Sample Book Card 6 -->
-      <div class="story-card animate__animated animate__fadeIn">
-        <img src="https://via.placeholder.com/220x140" alt="Book 6">
-        <h5>Carrot Shenanigans</h5>
-        <p>Pirate Pete must recover his missing carrot stash...</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Age 0-3 Section -->
-  <section class="story-section">
-    <h3>Age 0-3</h3>
-    <div class="story-cards">
-      <!-- Sample Book Card 7 -->
-      <div class="story-card animate__animated animate__fadeIn">
-        <img src="https://via.placeholder.com/220x140" alt="Book 7">
-        <h5>My Special Blankie</h5>
-        <p>Discover the magic of comfort with your special blankie!</p>
-      </div>
-      <!-- Sample Book Card 8 -->
-      <div class="story-card animate__animated animate__fadeIn">
-        <img src="https://via.placeholder.com/220x140" alt="Book 8">
-        <h5>Small Bird's Big Adventure</h5>
-        <p>Watch as Small Bird soars into a world of wonder...</p>
-      </div>
-      <!-- Sample Book Card 9 -->
-      <div class="story-card animate__animated animate__fadeIn">
-        <img src="https://via.placeholder.com/220x140" alt="Book 9">
-        <h5>Catch That Cat!</h5>
-        <p>A playful chase ensues when a mischievous cat steals socks.</p>
-      </div>
-    </div>
-  </section>
+  {% endfor %}
 
   <!-- Footer -->
   <footer>
