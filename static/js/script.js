@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
       darkModeToggle.checked = true;
       document.body.classList.add('dark-mode');
     }
-  
     darkModeToggle.addEventListener('change', function() {
       if (this.checked) {
         document.body.classList.add('dark-mode');

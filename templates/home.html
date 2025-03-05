@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tootales - Home</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="d-inline-block align-text-top">
+        Tootales
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Stories</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Audiobooks</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Store</a></li>
+        </ul>
+        <!-- Dark Mode Toggle -->
+        <div class="toggle-switch ms-3">
+          <input type="checkbox" id="darkModeToggle">
+          <label for="darkModeToggle" class="toggle-label">
+            <div class="toggle-icons">
+              <span class="toggle-sun">☀️</span>
+              <span class="toggle-moon">🌙</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner -->
+  <div class="banner">
+    <div class="banner-text animate__animated animate__fadeInDown">
+      <h2>Where Stories Come to Life</h2>
+    </div>
+  </div>
+
+  <!-- Featured Stories Section (Horizontal Scrolling) -->
+  <section class="story-section">
+    <h3>Featured Stories</h3>
+    <div class="story-cards">
+      <!-- Sample Book Card 1 -->
+      <div class="story-card animate__animated animate__fadeIn">
+        <img src="https://via.placeholder.com/220x140" alt="Book 1">
+        <h5>The Miraculous Secret</h5>
+        <p>When Pedro's friends find a bag of gold...</p>
+      </div>
+      <!-- Sample Book Card 2 -->
+      <div class="story-card animate__animated animate__fadeIn">
+        <img src="https://via.placeholder.com/220x140" alt="Book 2">
+        <h5>Queen Raggy</h5>
+        <p>The kingdom is rocked by a magical twist...</p>
+      </div>
+      <!-- Sample Book Card 3 -->
+      <div class="story-card animate__animated animate__fadeIn">
+        <img src="https://via.placeholder.com/220x140" alt="Book 3">
+        <h5>Clumsy Gloria</h5>
+        <p>Gloria stumbles into a hilarious adventure...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 Min Stories Section -->
+  <section class="story-section">
+    <h3>5 Min Stories</h3>
+    <div class="story-cards">
+      <!-- Sample Book Card 4 -->
+      <div class="story-card animate__animated animate__fadeIn">
+        <img src="https://via.placeholder.com/220x140" alt="Book 4">
+        <h5>Sindi and the Moon</h5>
+        <p>A brief encounter with a magical moonlit path...</p>
+      </div>
+      <!-- Sample Book Card 5 -->
+      <div class="story-card animate__animated animate__fadeIn">
+        <img src="https://via.placeholder.com/220x140" alt="Book 5">
+        <h5>I Found Magic</h5>
+        <p>A bear explores a lost forest, making a special discovery...</p>
+      </div>
+      <!-- Sample Book Card 6 -->
+      <div class="story-card animate__animated animate__fadeIn">
+        <img src="https://via.placeholder.com/220x140" alt="Book 6">
+        <h5>Carrot Shenanigans</h5>
+        <p>Pirate Pete must recover his missing carrot stash...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Age 0-3 Section -->
+  <section class="story-section">
+    <h3>Age 0-3</h3>
+    <div class="story-cards">
+      <!-- Sample Book Card 7 -->
+      <div class="story-card animate__animated animate__fadeIn">
+        <img src="https://via.placeholder.com/220x140" alt="Book 7">
+        <h5>My Special Blankie</h5>
+        <p>Discover the magic of comfort with your special blankie!</p>
+      </div>
+      <!-- Sample Book Card 8 -->
+      <div class="story-card animate__animated animate__fadeIn">
+        <img src="https://via.placeholder.com/220x140" alt="Book 8">
+        <h5>Small Bird's Big Adventure</h5>
+        <p>Watch as Small Bird soars into a world of wonder...</p>
+      </div>
+      <!-- Sample Book Card 9 -->
+      <div class="story-card animate__animated animate__fadeIn">
+        <img src="https://via.placeholder.com/220x140" alt="Book 9">
+        <h5>Catch That Cat!</h5>
+        <p>A playful chase ensues when a mischievous cat steals socks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Tootales. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

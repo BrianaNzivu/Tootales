@@ -1,14 +1,10 @@
-import streamlit as st
-import os
-import streamlit.components.v1 as components
+from flask import Flask, render_template
 
-st.set_page_config(page_title="D Tootales", layout="wide")
+app = Flask(__name__)
 
-def load_file(path: str) -> str:
-    with open(path, 'r', encoding='utf-8') as f:
-        return f.read()
+@app.route("/")
+def home():
+    return render_template("home.html")
 
-html_path = os.path.join("html", "home.html")
-html_content = load_file(html_path)
-
-components.html(html_content, height=800, scrolling=True)
+if __name__ == "__main__":
+    app.run(debug=True)
