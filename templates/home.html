@@ -12,10 +12,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <!-- Navbar -->
+  <!-- Navbar (Persistent on all pages) -->
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="{{ url_for('home') }}">
         <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="d-inline-block align-text-top">
         Tootales
       </a>
@@ -25,11 +25,12 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Stories</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">By Genres</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Audiobooks</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Store</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Generate a Story</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
         </ul>
         <!-- Dark Mode Toggle -->
         <div class="toggle-switch ms-3">
@@ -52,27 +53,22 @@
     </div>
   </div>
 
-  <!-- Loop through each category and display books in a horizontal scroll container -->
+  <!-- Categories and Book Cards -->
   {% for category, books in categories.items() %}
   <section class="story-section">
     <h3>{{ category }}</h3>
     <div class="scroll-container">
       {% for book in books %}
       <div class="story-card">
-        <!-- Clicking the cover loads the book detail page -->
-        <a href="{{ url_for('book_detail', identifier=book.identifier) }}">
-          <img src="https://archive.org/services/img/{{ book.identifier }}" class="book-cover" alt="Book Cover">
+        <a href="{{ url_for('book_detail', book_id=book.id) }}">
+          <img src="{{ book.formats['image/jpeg'] if book.formats.get('image/jpeg') else url_for('static', filename='assets/fallback.jpg') }}" class="book-cover" alt="Book Cover">
         </a>
         <div class="story-info">
           <h5>{{ book.title }}</h5>
-          <p><strong>Creator:</strong> {{ book.creator[0] if book.creator else "Unknown" }}</p>
+          <p><strong>Creator:</strong> {{ book.authors[0].name if book.authors else "Unknown" }}</p>
           <p><strong>Subject:</strong>
-            {% if book.subject %}
-              {% if book.subject is iterable %}
-                {{ book.subject | join(', ') }}
-              {% else %}
-                {{ book.subject }}
-              {% endif %}
+            {% if book.subjects %}
+              {{ book.subjects | join(', ') }}
             {% else %}
               N/A
             {% endif %}

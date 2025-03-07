@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <!-- Navbar (reuse the same as home) -->
+  <!-- Nav Bar -->
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="{{ url_for('home') }}">
@@ -24,7 +24,6 @@
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
-          <!-- Additional navbar items can be added here -->
         </ul>
         <div class="toggle-switch ms-3">
           <input type="checkbox" id="darkModeToggle">
@@ -39,42 +38,20 @@
     </div>
   </nav>
 
-  <!-- Book Detail Content with Tabs -->
+  <!-- Book Detail Content -->
   <div class="container mt-5">
-    <h2 class="mb-4">Reading: {{ identifier }}</h2>
-    <!-- Bootstrap Tabs for Read, Listen, and Watch -->
-    <ul class="nav nav-tabs" id="mediaTabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="read-tab" data-bs-toggle="tab" data-bs-target="#read" type="button" role="tab" aria-controls="read" aria-selected="true">Read</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="listen-tab" data-bs-toggle="tab" data-bs-target="#listen" type="button" role="tab" aria-controls="listen" aria-selected="false">Listen</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="watch-tab" data-bs-toggle="tab" data-bs-target="#watch" type="button" role="tab" aria-controls="watch" aria-selected="false">Watch</button>
-      </li>
-    </ul>
-    <div class="tab-content" id="mediaTabsContent">
-      <!-- Read Tab -->
-      <div class="tab-pane fade show active" id="read" role="tabpanel" aria-labelledby="read-tab">
+    {% if book %}
+      <h2 class="mb-4">Reading: {{ book.title }}</h2>
+      {% if text_url %}
         <div class="embed-responsive" style="height: 800px;">
-          <iframe src="https://archive.org/details/{{ identifier }}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+          <iframe src="{{ text_url }}" width="100%" height="100%" frameborder="0"></iframe>
         </div>
-      </div>
-      <!-- Listen Tab -->
-      <div class="tab-pane fade" id="listen" role="tabpanel" aria-labelledby="listen-tab">
-        <button id="playAudio" class="btn btn-primary mt-3">Play Audio</button>
-        <div class="embed-responsive" style="height: 800px; margin-top:20px;">
-          <iframe src="https://archive.org/embed/{{ identifier }}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        </div>
-      </div>
-      <!-- Watch Tab -->
-      <div class="tab-pane fade" id="watch" role="tabpanel" aria-labelledby="watch-tab">
-        <div class="embed-responsive" style="height: 800px;">
-          <iframe src="https://archive.org/embed/{{ identifier }}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
+      {% else %}
+        <p>Sorry, the full text is not available for this book.</p>
+      {% endif %}
+    {% else %}
+      <p>Book not found.</p>
+    {% endif %}
     <a href="{{ url_for('home') }}" class="btn btn-secondary mt-3">Back to Home</a>
   </div>
 
