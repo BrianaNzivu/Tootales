@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tootales - {{ book.title }}</title>
+  <title>Tootales - Generate Your Story</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <!-- Nav Bar -->
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="{{ url_for('home') }}">
@@ -23,6 +23,10 @@
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Audiobooks</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
         </ul>
         <div class="toggle-switch ms-3">
           <input type="checkbox" id="darkModeToggle">
@@ -37,25 +41,23 @@
     </div>
   </nav>
 
-  <!-- Book Details -->
-  <div class="container mt-5">
-    <h2 class="mb-4">Reading: {{ book.title }}</h2>
-    <p><strong>Author:</strong> {{ book.authors[0].name if book.authors else "Unknown" }}</p>
-    
-    {% if text_url %}
-      <div class="embed-responsive" style="height: 800px;">
-        <iframe src="{{ text_url }}" width="100%" height="100%" frameborder="0"></iframe>
-      </div>
-      <a href="{{ text_url }}" target="_blank" class="btn btn-primary mt-3">Read in New Tab</a>
-    {% else %}
-      <p class="text-danger">Sorry, this book is not available in a readable format.</p>
-    {% endif %}
-    
-    <a href="{{ url_for('by_genres') }}" class="btn btn-secondary mt-3">Back to Genres</a>
+  <!-- Main Content -->
+  <div class="container mt-5 text-center">
+    <h1 class="fw-bold">✨ Unleash Your Imagination! ✨</h1>
+    <p class="lead">Enter a story prompt and let the magic begin!</p>
+    <div class="card p-4 shadow-lg bg-light" style="max-width: 600px; margin: auto;">
+      <input type="text" id="storyPrompt" class="form-control mb-3" placeholder="Enter your story idea...">
+      <button id="generateStoryBtn" class="btn btn-primary">Generate Story</button>
+    </div>
+    <div id="generatedStory" class="mt-4"></div>
+
+    <h2 class="mt-5">📖 Make Your Story Interactive! 🎭</h2>
+    <p>Shape your adventure by making choices!</p>
+    <button id="startInteractiveStory" class="btn btn-success">Start Interactive Story</button>
+    <div id="interactiveStoryContainer" class="mt-3"></div>
   </div>
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/story.js') }}"></script>
 </body>
 </html>

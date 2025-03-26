@@ -12,12 +12,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <!-- Navbar (Persistent on all pages) -->
+  <!-- Nav Bar -->
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="{{ url_for('home') }}">
-        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="d-inline-block align-text-top">
-        Tootales
+        <img src="{{ url_for('static', filename='assets/logo.jpg') }}" alt="Tootales" class="d-inline-block align-text-top" style="width:150px; height:100px;">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
               aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,11 +24,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Stories</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">By Genres</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Audiobooks</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Generate a Story</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
         </ul>
         <!-- Dark Mode Toggle -->
@@ -46,6 +44,33 @@
     </div>
   </nav>
 
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown link
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <!-- Banner -->
   <div class="banner">
     <div class="banner-text animate__animated animate__fadeInDown">
@@ -53,15 +78,18 @@
     </div>
   </div>
 
-  <!-- Categories and Book Cards -->
-  {% for category, books in categories.items() %}
+  <!-- Featured Books Section -->
   <section class="story-section">
-    <h3>{{ category }}</h3>
+    <h3>Featured Books</h3>
     <div class="scroll-container">
       {% for book in books %}
       <div class="story-card">
         <a href="{{ url_for('book_detail', book_id=book.id) }}">
-          <img src="{{ book.formats['image/jpeg'] if book.formats.get('image/jpeg') else url_for('static', filename='assets/fallback.jpg') }}" class="book-cover" alt="Book Cover">
+          {% if book.formats.get('image/jpeg') %}
+            <img src="{{ book.formats['image/jpeg'] }}" class="book-cover" alt="Book Cover">
+          {% else %}
+            <img src="https://via.placeholder.com/220x140" class="book-cover" alt="Book Cover">
+          {% endif %}
         </a>
         <div class="story-info">
           <h5>{{ book.title }}</h5>
@@ -78,16 +106,13 @@
       {% endfor %}
     </div>
   </section>
-  {% endfor %}
 
   <!-- Footer -->
   <footer>
     <p>© 2025 Tootales. All Rights Reserved.</p>
   </footer>
 
-  <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom JS -->
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

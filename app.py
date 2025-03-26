@@ -1,74 +1,61 @@
 import requests
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
+from flask_caching import Cache
+from utils.gutendex_api import get_featured_books, get_books_by_genres, get_book_details
+from utils.librivox_api import get_audiobooks
+from utils.story_generator import generate_story
 
+# Initialize Flask app
 app = Flask(__name__)
 
-def fetch_books_gutendex(search_query, rows=8, page=1):
-    """
-    Fetch books from the Gutendex API by search query,
-    filtering for English language.
-    """
-    base_url = "https://gutendex.com/books"
-    params = {
-        "languages": "en",
-        "search": search_query,
-        "page": page
-    }
-    try:
-        response = requests.get(base_url, params=params)
-        response.raise_for_status()
-        data = response.json()
-        books = data.get("results", [])
-        return books[:rows]
-    except Exception as e:
-        print("Error fetching books:", e)
-        return []
+# Initialize caching
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
+
+# ----------- ROUTES -----------
 
 @app.route("/")
 def home():
-    # Define categories with search queries tailored for fun, engaging children’s books.
-    category_queries = {
-        "Picture Books": "picture book",
-        "Fairy Tales": "fairy tale",
-        "Chapter Books": "chapter book",
-        "Kids Poems": "children poetry",
-        "Comic Books": "comic",
-        "Phonics Books": "phonics"
-    }
-    categories = {}
-    for category, query in category_queries.items():
-        categories[category] = fetch_books_gutendex(query, rows=8, page=1)
-    return render_template("home.html", categories=categories)
+    """Load the homepage with featured books."""
+    featured_books = get_featured_books()
+    return render_template("home.html", books=featured_books)
+
+@app.route("/by_genres")
+def by_genres():
+    """Load the genres page with categorized books."""
+    genres = get_books_by_genres()
+    return render_template("by_genres.html", genres=genres)
 
 @app.route("/book/<int:book_id>")
 def book_detail(book_id):
-    """
-    Fetches the book details from Gutendex API by its id.
-    Checks for an HTML version of the text; if not found, falls back to plain text.
-    """
-    url = f"https://gutendex.com/books/{book_id}"
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        book = response.json()
-    except Exception as e:
-        print("Error fetching book details:", e)
-        book = None
-
-    text_url = None
-    if book:
-        formats = book.get("formats", {})
-        # Prefer HTML version, else plain text
-        for key, value in formats.items():
-            if "text/html" in key and value.endswith(".htm"):
-                text_url = value
-                break
-        if not text_url:
-            for key, value in formats.items():
-                if "text/plain" in key and value.endswith(".txt"):
-                    text_url = value
-                    break
+    """Load book details and display in an iframe or plain text."""
+    book, text_url = get_book_details(book_id)
     return render_template("book.html", book=book, text_url=text_url)
 
+@app.route("/audiobooks")
+def audiobooks():
+    """Fetch children's audiobooks from Librivox API."""
+    genres = get_audiobooks()
+    return render_template("audiobooks.html", genres=genres)
+
+@app.route("/audiobook/<int:book_id>")
+def audiobook_detail(book_id):
+    """Fetch a single audiobook's details from Librivox API."""
+    book = get_audiobooks(book_id=book_id)
+    return render_template("audiobook_detail.html", book=book)
+
+@app.route("/generate_story")
+def generate_story_page():
+    """Render the AI story generator page."""
+    return render_template("generate_story.html")
+
+@app.route("/generate_story_api", methods=["POST"])
+def generate_story_api():
+    """Generate a story based on user input."""
+    data = request.get_json()
+    prompt = data.get("prompt", "a curious adventurer")
+    story = generate_story(prompt)
+    return jsonify({"story": story})
+
+# Run the application
 if __name__ == "__main__":
     app.run(debug=True)
