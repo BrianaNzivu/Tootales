@@ -1,48 +1,53 @@
 import requests
 
-BASE_URL = "https://gutendex.com/books"
+GUTENDEX_API = "https://gutendex.com/books"
 
-def fetch_books_gutendex(search_query, rows=8, page=1):
-    """Fetch books from the Gutendex API filtered for English."""
+def fetch_books_gutendex(search_query, rows=50, page=1):
     params = {
         "languages": "en",
         "search": search_query,
         "page": page
     }
     try:
-        response = requests.get(BASE_URL, params=params)
+        response = requests.get(GUTENDEX_API, params=params)
         response.raise_for_status()
-        return response.json().get("results", [])[:rows]
+        data = response.json()
+        books = data.get("results", [])
+        return books[:rows]
     except Exception as e:
         print("Error fetching books:", e)
         return []
 
 def get_featured_books():
-    """Fetch featured children's books."""
     return fetch_books_gutendex("children's literature", rows=8, page=1)
 
 def get_books_by_genres():
-    """Fetch categorized books."""
     genres = {
         "Fiction": {
-            "Adventure": "adventure fiction",
-            "Fantasy": "fantasy fiction",
+            "Adventure": fetch_books_gutendex("adventure fiction"),
+            "Fantasy": fetch_books_gutendex("fantasy fiction"),
         },
         "Non-Fiction": {
-            "Biography": "biography",
-            "Self-Help": "self help",
+            "Biography": fetch_books_gutendex("biography"),
+            "History": fetch_books_gutendex("history non-fiction"),
         }
     }
-    return {genre: {sub: fetch_books_gutendex(query) for sub, query in subgenres.items()} for genre, subgenres in genres.items()}
+    return genres
 
 def get_book_details(book_id):
-    """Fetch a single book's details from Gutendex API."""
-    url = f"{BASE_URL}/{book_id}"
+    url = f"https://gutendex.com/books/{book_id}"
     try:
         response = requests.get(url)
         response.raise_for_status()
         book = response.json()
-        text_url = next((value for key, value in book.get("formats", {}).items() if "text/html" in key or "text/plain" in key), None)
+        text_url = None
+
+        formats = book.get("formats", {})
+        for key, value in formats.items():
+            if "text/plain" in key:
+                text_url = value
+                break
+
         return book, text_url
     except Exception as e:
         print("Error fetching book details:", e)

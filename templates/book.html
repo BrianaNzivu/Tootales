@@ -10,19 +10,22 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <!-- Nav Bar -->
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="{{ url_for('home') }}">
-        <img src="{{ url_for('static', filename='assets/logo.jpg') }}" alt="Tootales" class="d-inline-block align-text-top" style="width:150px; height:100px;">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="logo">
+        Tootales
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
-              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
         </ul>
         <div class="toggle-switch ms-3">
           <input type="checkbox" id="darkModeToggle">
@@ -36,7 +39,6 @@
       </div>
     </div>
   </nav>
-
   <!-- Book Details -->
   <div class="container mt-5">
     <h2 class="mb-4">Reading: {{ book.title }}</h2>
