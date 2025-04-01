@@ -1,0 +1,11 @@
+# Ignore Python virtual environment
+venv/
+
+# Ignore cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.log
+
+# Ignore Hugging Face cache
+~/.cache/huggingface/

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audiobooks</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="logo">
+        Tootales
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+        </ul>
+        <div class="toggle-switch ms-3">
+          <input type="checkbox" id="darkModeToggle">
+          <label for="darkModeToggle" class="toggle-label">
+            <div class="toggle-icons">
+              <span class="toggle-sun">☀️</span>
+              <span class="toggle-moon">🌙</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Audiobooks Section -->
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">🎧 Audiobooks</h2>
+    <div class="row">
+      {% for book in books %}
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm">
+            <img src="{{ book.cover_url if book.cover_url else url_for('static', filename='assets/fallback.jpg') }}" class="card-img-top" alt="Book Cover">
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ book.title }}</h5>
+              <p class="card-text"><strong>Author:</strong> {{ book.author if book.author else "Unknown" }}</p>
+              <a href="{{ url_for('audiobook_detail', book_id=book.id) }}" class="btn btn-primary">🎧 Listen</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Tootales. All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tootales - Home</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="logo">
+        Tootales
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+        </ul>
+        <div class="toggle-switch ms-3">
+          <input type="checkbox" id="darkModeToggle">
+          <label for="darkModeToggle" class="toggle-label">
+            <div class="toggle-icons">
+              <span class="toggle-sun">☀️</span>
+              <span class="toggle-moon">🌙</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner -->
+  <div class="banner">
+    <div class="banner-text animate__animated animate__fadeInDown">
+      <h2>Where Stories Come to Life</h2>
+    </div>
+  </div>
+
+  <!-- Featured Books Section -->
+  <section class="story-section">
+    <h3>Featured Books</h3>
+    <div class="scroll-container">
+      {% for book in books %}
+      <div class="story-card">
+        <a href="{{ url_for('book_detail', book_id=book.id) }}">
+          {% if book.formats.get('image/jpeg') %}
+            <img src="{{ book.formats['image/jpeg'] }}" class="book-cover" alt="Book Cover">
+          {% else %}
+            <img src="https://via.placeholder.com/220x140" class="book-cover" alt="Book Cover">
+          {% endif %}
+        </a>
+        <div class="story-info">
+          <h5>{{ book.title }}</h5>
+          <p><strong>Creator:</strong> {{ book.authors[0].name if book.authors else "Unknown" }}</p>
+          <p><strong>Subject:</strong>
+            {% if book.subjects %}
+              {{ book.subjects | join(', ') }}
+            {% else %}
+              N/A
+            {% endif %}
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Tootales. All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

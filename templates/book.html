@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tootales - {{ book.title }}</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="logo">
+        Tootales
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+        </ul>
+        <div class="toggle-switch ms-3">
+          <input type="checkbox" id="darkModeToggle">
+          <label for="darkModeToggle" class="toggle-label">
+            <div class="toggle-icons">
+              <span class="toggle-sun">☀️</span>
+              <span class="toggle-moon">🌙</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Book Details -->
+  <div class="container mt-5">
+    <h2 class="mb-4">Reading: {{ book.title }}</h2>
+    <p><strong>Author:</strong> {{ book.authors[0].name if book.authors else "Unknown" }}</p>
+    
+    {% if text_url %}
+      <div class="embed-responsive" style="height: 800px;">
+        <iframe src="{{ text_url }}" width="100%" height="100%" frameborder="0"></iframe>
+      </div>
+      <a href="{{ text_url }}" target="_blank" class="btn btn-primary mt-3">Read in New Tab</a>
+    {% else %}
+      <p class="text-danger">Sorry, this book is not available in a readable format.</p>
+    {% endif %}
+    
+    <a href="{{ url_for('by_genres') }}" class="btn btn-secondary mt-3">Back to Genres</a>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
