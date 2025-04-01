@@ -1,0 +1,201 @@
+/* ---------- GENERAL STYLES ---------- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #333333;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.dark-mode {
+    background-color: #1e1e1e;
+    color: #ffffff;
+  }
+  
+  /* ---------- NAVBAR ---------- */
+  .navbar {
+    border-bottom: 1px solid #eee;
+  }
+  .navbar-brand img {
+    height: 40px;
+    margin-right: 10px;
+  }
+  .navbar-nav .nav-link {
+    margin: 0 10px;
+    font-weight: 500;
+    color: #333333 !important;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #ff6f61 !important;
+  }
+  body.dark-mode .navbar,
+  body.dark-mode .nav-link {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+  }
+  
+  /* ---------- DARK/LIGHT TOGGLE ---------- */
+  .toggle-switch {
+    position: relative;
+    width: 60px;
+    display: inline-block;
+  }
+  .toggle-switch input[type="checkbox"] {
+    display: none;
+  }
+  .toggle-label {
+    cursor: pointer;
+    width: 60px;
+    height: 30px;
+    background: #ffdf5d;
+    display: block;
+    border-radius: 30px;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .toggle-icons {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .toggle-sun,
+  .toggle-moon {
+    font-size: 18px;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .toggle-moon {
+    opacity: 0;
+  }
+  .toggle-label::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  input[type="checkbox"]:checked + .toggle-label {
+    background: #4e4e4e;
+  }
+  input[type="checkbox"]:checked + .toggle-label::after {
+    transform: translateX(30px);
+  }
+  input[type="checkbox"]:checked + .toggle-label .toggle-sun {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  input[type="checkbox"]:checked + .toggle-label .toggle-moon {
+    opacity: 1;
+    transform: translateX(-10px);
+  }
+  
+  /* ---------- BANNER ---------- */
+  .banner {
+    width: 100%;
+    height: 300px;
+    background: url("../assets/banner.jpg") center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  .banner-text {
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 20px 40px;
+    border-radius: 8px;
+  }
+  
+  /* ---------- STORY SECTIONS ---------- */
+  .story-section {
+    padding: 20px;
+  }
+  .story-section h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  /* Horizontal scrolling container */
+  .scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 10px;
+    gap: 15px;
+    white-space: nowrap;
+  }
+  
+  /* Story Card */
+  .story-card {
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    scroll-snap-align: start;
+    text-align: center;
+  }
+  .story-card:hover {
+    transform: scale(1.05);
+  }
+  .story-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+  }
+  .story-card h5 {
+    margin: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .story-card p {
+    margin: 0 10px 10px;
+    font-size: 0.9rem;
+  }
+  
+  /* Book Cover (Clickable) for Horizontal Scroll Cards */
+  .book-cover {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+  .book-cover:hover {
+    opacity: 0.8;
+  }
+  
+  /* Story Info */
+  .story-info {
+    padding: 10px;
+  }
+  .story-info h5 {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  .story-info p {
+    font-size: 0.9rem;
+  }
+  
+  /* ---------- FOOTER ---------- */
+  footer {
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+  }
+  body.dark-mode footer {
+    background-color: #2f2f2f;
+    color: #fff;
+  }
+  
