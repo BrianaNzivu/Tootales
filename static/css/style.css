@@ -198,4 +198,12 @@ body {
     background-color: #2f2f2f;
     color: #fff;
   }
+  .card:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card-title {
+    font-size: 1rem;
+  }
   

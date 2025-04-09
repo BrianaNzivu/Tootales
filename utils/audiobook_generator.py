@@ -10,7 +10,6 @@ db = firestore.client()
 
 def get_all_audiobooks():
     try:
-        # Fetch all documents from the 'audiobooks' collection
         books_ref = db.collection('audiobooks')
         docs = books_ref.stream()
 
@@ -18,12 +17,14 @@ def get_all_audiobooks():
         for doc in docs:
             book = doc.to_dict()
             book['id'] = doc.id  # Include the document ID for each book
+            book['cover_url'] = doc.get('cover_image_url')  # Fetch cover_image_url from Firestore
             books.append(book)
 
         return books
     except Exception as e:
         print(f"Error fetching audiobooks: {e}")
         return []
+
     
 def get_audiobook_by_id(book_id):
     try:

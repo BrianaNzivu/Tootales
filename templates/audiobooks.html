@@ -30,24 +30,25 @@
     </div>
   </nav>
 
-  <!-- Audiobooks Section -->
-  <div class="container mt-5">
-    <h2 class="mb-4 text-center">🎧 Audiobooks</h2>
-    <div class="row">
-      {% for book in books %}
-        <div class="col-md-4 mb-4">
-          <div class="card shadow-sm">
-            <a href="{{ url_for('audiobook_detail', book_id=book['id']) }}">
-              <img src="{{ book.cover_url if book.cover_url else url_for('static', filename='assets/fallback.jpg') }}" class="card-img-top" alt="Book Cover">
-            </a>
-            <div class="card-body text-center">
-              <h5 class="card-title">{{ book.title }}</h5>
-            </div>
+  <div class="row justify-content-center">
+    {% for book in books %}
+      <div class="col-md-3 col-sm-6 mb-4 d-flex align-items-stretch">
+        <div class="card shadow-sm h-100 text-center" style="border-radius: 12px;">
+          <a href="{{ url_for('audiobook_detail', book_id=book['id']) }}">
+            <img src="{{ book.cover_url if book.cover_url else url_for('static', filename='assets/fallback.jpg') }}"
+                 class="card-img-top img-fluid"
+                 alt="Book Cover"
+                 style="height: 250px; object-fit: cover; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title mb-0" style="font-weight: 600;">{{ book.title }}</h6>
+            <small class="text-muted">{{ book.author or 'Unknown Author' }}</small>
           </div>
         </div>
-      {% endfor %}
-    </div>
+      </div>
+    {% endfor %}
   </div>
+  
 
   <!-- Footer -->
   <footer>

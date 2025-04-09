@@ -31,15 +31,14 @@ def audiobooks():
 
 @app.route("/audiobook/<book_id>")
 def audiobook_detail(book_id):
-    book = get_audiobook_by_id(book_id)  # Fetch the specific audiobook by ID from Firestore
+    book = get_audiobook_by_id(book_id)
     if not book:
-        return render_template("error.html", message="Audiobook not found"), 404
+        return render_template("error.html", message="Book not found"), 404
 
-    audio_url = book.get('audio_url')  # Get the audio URL (Cloudinary URL) from the book metadata
+    # Map Firestore field to the one your HTML expects
+    book['cover_url'] = book.get('cover_image_url')  
 
-    if not audio_url:
-        return render_template("error.html", message="Audio file not found for this book."), 404
-
+    audio_url = book.get("audio_url")
     return render_template("audiobook_detail.html", book=book, audio_url=audio_url)
 
 @app.route("/generate_story")
