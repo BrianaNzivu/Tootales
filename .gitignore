@@ -1,11 +1,14 @@
 # Ignore Python virtual environment
 venv/
 
+firebase_key.json
+
 # Ignore cache and temporary files
 __pycache__/
 *.pyc
 *.pyo
 *.log
+*.env
 
 # Ignore Hugging Face cache
 ~/.cache/huggingface/

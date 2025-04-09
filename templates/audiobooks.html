@@ -26,15 +26,6 @@
           <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
         </ul>
-        <div class="toggle-switch ms-3">
-          <input type="checkbox" id="darkModeToggle">
-          <label for="darkModeToggle" class="toggle-label">
-            <div class="toggle-icons">
-              <span class="toggle-sun">☀️</span>
-              <span class="toggle-moon">🌙</span>
-            </div>
-          </label>
-        </div>
       </div>
     </div>
   </nav>
@@ -46,11 +37,11 @@
       {% for book in books %}
         <div class="col-md-4 mb-4">
           <div class="card shadow-sm">
-            <img src="{{ book.cover_url if book.cover_url else url_for('static', filename='assets/fallback.jpg') }}" class="card-img-top" alt="Book Cover">
+            <a href="{{ url_for('audiobook_detail', book_id=book['id']) }}">
+              <img src="{{ book.cover_url if book.cover_url else url_for('static', filename='assets/fallback.jpg') }}" class="card-img-top" alt="Book Cover">
+            </a>
             <div class="card-body text-center">
               <h5 class="card-title">{{ book.title }}</h5>
-              <p class="card-text"><strong>Author:</strong> {{ book.author if book.author else "Unknown" }}</p>
-              <a href="{{ url_for('audiobook_detail', book_id=book.id) }}" class="btn btn-primary">🎧 Listen</a>
             </div>
           </div>
         </div>

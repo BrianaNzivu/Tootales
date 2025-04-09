@@ -1,25 +1,40 @@
-import os
-import requests
-from gtts import gTTS
+import firebase_admin
+from firebase_admin import credentials, firestore
 
-AUDIOBOOK_FOLDER = "static/audiobooks"
-os.makedirs(AUDIOBOOK_FOLDER, exist_ok=True)
+# Initialize Firebase Admin SDK
+cred = credentials.Certificate('firebase_key.json')
+firebase_admin.initialize_app(cred)
 
-def generate_audiobook(book_id, text_url):
-    """
-    Fetches book text from Gutenberg and converts it to an audiobook.
-    """
+# Get Firestore client
+db = firestore.client()
+
+def get_all_audiobooks():
     try:
-        response = requests.get(text_url)
-        response.raise_for_status()
-        book_text = response.text[:500]  # Limiting to the first 500 chars for demo
+        # Fetch all documents from the 'audiobooks' collection
+        books_ref = db.collection('audiobooks')
+        docs = books_ref.stream()
 
-        tts = gTTS(book_text, lang="en")
-        audio_path = os.path.join(AUDIOBOOK_FOLDER, f"{book_id}.mp3")
-        tts.save(audio_path)
-        
-        return f"/audio/{book_id}"
-    
+        books = []
+        for doc in docs:
+            book = doc.to_dict()
+            book['id'] = doc.id  # Include the document ID for each book
+            books.append(book)
+
+        return books
     except Exception as e:
-        print("Error generating audiobook:", e)
+        print(f"Error fetching audiobooks: {e}")
+        return []
+    
+def get_audiobook_by_id(book_id):
+    try:
+        # Fetch a single book document by its ID
+        book_ref = db.collection('audiobooks').document(book_id)
+        book_doc = book_ref.get()
+
+        if book_doc.exists:
+            return book_doc.to_dict()  # Return the book details as a dictionary
+        else:
+            return None  # Book not found
+    except Exception as e:
+        print(f"Error fetching audiobook by ID {book_id}: {e}")
         return None

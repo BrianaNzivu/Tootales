@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Color It!</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.6.0/fabric.min.js"></script>
+  <style>
+    #canvas-container { margin-bottom: 10px; }
+    .color-swatch {
+      width: 30px; height: 30px;
+      display: inline-block;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎨 Pick an image and start coloring!</h2>
+
+  <select id="svg-selector">
+    <option value="C:\Users\bjnzi\Documents\Tootales V2\static\assets\mickey.svg">Mickey</option>
+    <option value="tree.svg">Tree</option>
+    <option value="rocket.svg">Rocket</option>
+  </select>
+  <button onclick="loadSelectedSVG()">Load</button>
+
+  <div id="canvas-container">
+    <canvas id="c" width="800" height="600" style="border:1px solid #ccc;"></canvas>
+  </div>
+
+  <div id="color-picker">
+    <div class="color-swatch" style="background:red" data-color="red"></div>
+    <div class="color-swatch" style="background:blue" data-color="blue"></div>
+    <div class="color-swatch" style="background:green" data-color="green"></div>
+    <div class="color-swatch" style="background:orange" data-color="orange"></div>
+    <div class="color-swatch" style="background:yellow" data-color="yellow"></div>
+  </div>
+
+  <br><br>
+  <button onclick="saveImage()">Save As Image</button>
+
+  <script src="coloring.js"></script>
+</body>
+</html>
