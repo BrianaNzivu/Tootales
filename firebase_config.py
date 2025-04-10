@@ -1,14 +1,14 @@
 import pyrebase
 
-# Replace with your Firebase Web config
+# Your Firebase Web config
 firebase_config = {
-    "apiKey": "YOUR-API-KEY",
-    "authDomain": "your-app.firebaseapp.com",
-    "projectId": "your-app",
-    "storageBucket": "your-app.appspot.com",
-    "messagingSenderId": "SENDER_ID",
-    "appId": "APP_ID",
-    "measurementId": "MEASUREMENT_ID",
+    "apiKey": "AIzaSyAHjDQsqvU-OXjpNIzgg8nQrz6m5YWOL6o",
+    "authDomain": "tootales.firebaseapp.com",
+    "projectId": "tootales",
+    "storageBucket": "tootales.appspot.com",
+    "messagingSenderId": "167743847585",
+    "appId": "1:167743847585:web:dummyappidfornow",
+    "measurementId": "G-DUMMYID",
     "databaseURL": ""
 }
 

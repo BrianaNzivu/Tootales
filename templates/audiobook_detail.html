@@ -24,8 +24,22 @@
           <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
           <li class="nav-item"><a class="nav-link active" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+          {% if user_name %}
+          <li class="nav-item"><a class="nav-link" href="#">{{ user_name }}</a></li>
+          <a href="{{ url_for('auth_bp.logout') }}">Logout</a>
+          {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+          {% endif %}        
         </ul>
+        <div class="toggle-switch ms-3">
+          <input type="checkbox" id="darkModeToggle">
+          <label for="darkModeToggle" class="toggle-label">
+            <div class="toggle-icons">
+              <span class="toggle-sun">☀️</span>
+              <span class="toggle-moon">🌙</span>
+            </div>
+          </label>
+        </div>
       </div>
     </div>
   </nav>
