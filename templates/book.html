@@ -3,67 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tootales - {{ book.title }}</title>
-  <!-- Bootstrap CSS -->
+  <title>{{ book.title }}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .banner {
+      background-image: url('{{ book.cover_url if book.cover_url else url_for("static", filename="assets/fallback.jpg") }}');
+      background-size: cover;
+      background-position: center;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+    .book-details {
+      margin-top: -100px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    .iframe-container {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{{ url_for('home') }}">
-        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="logo">
-        Tootales
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
-          <li class="nav-item"><a class="nav-link active" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
-          {% if user_name %}
-          <li class="nav-item"><a class="nav-link" href="#">{{ user_name }}</a></li>
-          <a href="{{ url_for('auth_bp.logout') }}">Logout</a>
-          {% else %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-          {% endif %}        
-        </ul>
-        <div class="toggle-switch ms-3">
-          <input type="checkbox" id="darkModeToggle">
-          <label for="darkModeToggle" class="toggle-label">
-            <div class="toggle-icons">
-              <span class="toggle-sun">☀️</span>
-              <span class="toggle-moon">🌙</span>
-            </div>
-          </label>
-        </div>
+  <div class="banner">
+    <div class="text-center">
+      <h1>{{ book.title }}</h1>
+      <p>By {{ book.authors[0].name if book.authors else "Unknown Author" }}</p>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="row book-details">
+      <div class="col-md-4 text-center">
+        <img src="{{ book.cover_url if book.cover_url else url_for('static', filename='assets/fallback.jpg') }}" alt="Book Cover" class="img-fluid">
+      </div>
+      <div class="col-md-8">
+        <h2>{{ book.title }}</h2>
+        <p><strong>Author:</strong> {{ book.authors[0].name if book.authors else "Unknown" }}</p>
+        <p><strong>Description:</strong> {{ book.description if book.description else "No description available." }}</p>
+        {% if text_url %}
+        <a href="{{ text_url }}" target="_blank" class="btn btn-primary mt-3">Read in New Tab</a>
+        {% else %}
+        <p class="text-danger mt-3">Sorry, this book is not available in a readable format.</p>
+        {% endif %}
       </div>
     </div>
-  </nav>
-
-  <!-- Book Details -->
-  <div class="container mt-5">
-    <h2 class="mb-4">Reading: {{ book.title }}</h2>
-    <p><strong>Author:</strong> {{ book.authors[0].name if book.authors else "Unknown" }}</p>
-    
     {% if text_url %}
-      <div class="embed-responsive" style="height: 800px;">
-        <iframe src="{{ text_url }}" width="100%" height="100%" frameborder="0"></iframe>
-      </div>
-      <a href="{{ text_url }}" target="_blank" class="btn btn-primary mt-3">Read in New Tab</a>
-    {% else %}
-      <p class="text-danger">Sorry, this book is not available in a readable format.</p>
+    <div class="iframe-container mt-5">
+      <iframe src="{{ text_url }}" width="100%" height="600px" frameborder="0"></iframe>
+    </div>
     {% endif %}
-    
-    <a href="{{ url_for('by_genres') }}" class="btn btn-secondary mt-3">Back to Genres</a>
   </div>
-
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

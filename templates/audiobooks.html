@@ -6,63 +6,142 @@
   <title>Audiobooks</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    /* Banner Section */
+    .banner {
+    position: relative;
+    background-image: url('/static/assets/audiobook.jpg'); /* Use the relative path */
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+    .banner h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    .banner p {
+      font-size: 1.2rem;
+    }
+
+    /* Card Styling */
+    .card {
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      background-color: #f8f9fa;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
     <div class="container-fluid">
+      <!-- Logo on the left -->
       <a class="navbar-brand" href="{{ url_for('home') }}">
         <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="logo">
-        Tootales
       </a>
+
+      <!-- Navbar toggler for mobile view -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
         <span class="navbar-toggler-icon"></span>
       </button>
+
+      <!-- Navbar content -->
       <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav ms-auto">
+        <!-- Centered navigation links -->
+        <ul class="navbar-nav mx-auto">
           <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
-          <li class="nav-item"><a class="nav-link active" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
-          {% if user_name %}
-          <li class="nav-item"><a class="nav-link" href="#">{{ user_name }}</a></li>
-          <a href="{{ url_for('auth_bp.logout') }}">Logout</a>
-          {% else %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-          {% endif %}        
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('fabric') }}">Brain Break</a></li>
         </ul>
-        <div class="toggle-switch ms-3">
-          <input type="checkbox" id="darkModeToggle">
-          <label for="darkModeToggle" class="toggle-label">
-            <div class="toggle-icons">
-              <span class="toggle-sun">☀️</span>
-              <span class="toggle-moon">🌙</span>
+
+        <!-- Right-aligned user dropdown and dark mode toggle -->
+        <ul class="navbar-nav ms-auto">
+          {% if user_name %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle welcome-message" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Welcome, {{ user_name }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="{{ url_for('auth_bp.logout') }}">Logout</a></li>
+            </ul>
+          </li>
+          {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('auth_bp.login') }}">Login</a></li>
+          {% endif %}
+
+          <!-- Dark mode toggle with sun and moon icons -->
+          <li class="nav-item">
+            <div class="form-check form-switch ms-3 d-flex align-items-center">
+              <label class="form-check-label" for="darkModeToggle">
+                <i id="darkModeIcon" class="bi bi-sun"></i>
+              </label>
+              <input class="form-check-input ms-2" type="checkbox" id="darkModeToggle">
             </div>
-          </label>
-        </div>
+          </li>
+        </ul>
+        <!-- Dark mode toggle with sun and moon icons -->
+        <li class="nav-item">
+          <div class="form-check form-switch ms-3 d-flex align-items-center">
+            <label class="form-check-label" for="darkModeToggle">
+              <i id="darkModeIcon" class="bi bi-sun"></i>
+            </label>
+            <input class="form-check-input ms-2" type="checkbox" id="darkModeToggle">
+          </div>
+        </li>
       </div>
     </div>
   </nav>
 
-  <div class="row justify-content-center">
-    {% for book in books %}
-      <div class="col-md-3 col-sm-6 mb-4 d-flex align-items-stretch">
-        <div class="card shadow-sm h-100 text-center" style="border-radius: 12px;">
-          <a href="{{ url_for('audiobook_detail', book_id=book['id']) }}">
-            <img src="{{ book.cover_url if book.cover_url else url_for('static', filename='assets/fallback.jpg') }}"
-                 class="card-img-top img-fluid"
-                 alt="Book Cover"
-                 style="height: 250px; object-fit: cover; border-top-left-radius: 12px; border-top-right-radius: 12px;">
-          </a>
-          <div class="card-body">
-            <h6 class="card-title mb-0" style="font-weight: 600;">{{ book.title }}</h6>
-            <small class="text-muted">{{ book.author or 'Unknown Author' }}</small>
+
+  <!-- Banner Section -->
+  <div class="banner animate__animated animate__fadeIn">
+    <div class="text-center">
+      <h1>Explore Audiobooks</h1>
+      <p>Discover stories that come alive through sound.</p>
+    </div>
+  </div>
+
+  <!-- Audiobooks Section -->
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      {% for book in books %}
+        <div class="col-md-3 col-sm-6 mb-4 d-flex align-items-stretch animate__animated animate__zoomIn">
+          <div class="card shadow-sm h-100 text-center">
+            <a href="{{ url_for('audiobook_detail', book_id=book['id']) }}">
+              <img src="{{ book.cover_url if book.cover_url else url_for('static', filename='assets/fallback.jpg') }}"
+                   class="card-img-top img-fluid"
+                   alt="Book Cover"
+                   style="height: 250px; object-fit: cover;">
+            </a>
+            <div class="card-body">
+              <h6 class="card-title mb-0" style="font-weight: 600;">{{ book.title }}</h6>
+              <small class="text-muted">{{ book.author or 'Unknown Author' }}</small>
+            </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
-  
 
   <!-- Footer -->
   <footer>

@@ -1,46 +1,42 @@
-const canvas = new fabric.Canvas('c');
-let selectedColor = 'red';
+let canvas = new fabric.Canvas('c');
 
-// 🎨 Color picker
-document.querySelectorAll('.color-swatch').forEach(swatch => {
-  swatch.addEventListener('click', () => {
-    selectedColor = swatch.dataset.color;
+// Load the selected SVG onto the canvas
+function loadSelectedSVG() {
+  const selector = document.getElementById('svg-selector');
+  const svgPath = selector.value;
+
+  fabric.loadSVGFromURL(svgPath, function (objects, options) {
+    const svg = fabric.util.groupSVGElements(objects, options);
+    canvas.clear(); // Clear the canvas before loading a new SVG
+    canvas.add(svg);
+    canvas.centerObject(svg);
+    svg.setCoords();
+  }, function (error) {
+    console.error("Error loading SVG:", error);
   });
-});
+}
 
-// 🖱️ Fill color on shape click
-canvas.on('mouse:down', function(opt) {
-  const target = opt.target;
-  if (target && target.fill !== null) {
-    target.set('fill', selectedColor);
-    canvas.renderAll();
+// Change the color of clicked objects
+document.getElementById('color-picker').addEventListener('click', function (e) {
+  if (e.target.classList.contains('color-swatch')) {
+    const color = e.target.getAttribute('data-color');
+    const activeObject = canvas.getActiveObject();
+
+    if (activeObject && activeObject.set) {
+      activeObject.set('fill', color);
+      canvas.renderAll();
+    }
   }
 });
 
-window.loadSelectedSVG = function () {
-    const fileName = document.getElementById('svg-selector').value;
-    const filePath = `assets/${fileName}`;
-  
-    console.log("Trying to load:", filePath);  // Debug log
-  
-    // Clear the canvas
-    canvas.clear();
-  
-    // Load SVG and check results
-    fabric.loadSVGFromURL(filePath, function(objects, options) {
-      if (!objects || objects.length === 0) {
-        alert("No shapes found in SVG. Check the file.");
-        return;
-      }
-  
-      const obj = fabric.util.groupSVGElements(objects, options);
-      obj.scaleToWidth(600);
-      obj.set({ left: 100, top: 50 });
-      canvas.add(obj);
-      canvas.renderAll();
-    }, function (error) {
-      console.error("Error loading SVG:", error);
-      alert("SVG failed to load. Check file path or format.");
-    });
-  };
-  
+// Save the canvas as an image
+function saveImage() {
+  const dataURL = canvas.toDataURL({
+    format: 'png',
+    quality: 1.0,
+  });
+  const link = document.createElement('a');
+  link.href = dataURL;
+  link.download = 'colored_image.png';
+  link.click();
+}

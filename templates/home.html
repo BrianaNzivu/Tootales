@@ -11,6 +11,47 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- Custom CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* Banner Section */
+    .banner {
+    position: relative;
+    background-image: url('/static/assets/banner.jpg'); /* Use the relative path */
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+    .banner h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    .banner p {
+      font-size: 1.2rem;
+    }
+
+    /* Card Styling */
+    .card {
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      background-color: #f8f9fa;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
@@ -19,22 +60,23 @@
       <a class="navbar-brand" href="{{ url_for('home') }}">
         <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Tootales" class="logo">
       </a>
-  
+
       <!-- Navbar toggler for mobile view -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
         <span class="navbar-toggler-icon"></span>
       </button>
-  
+
       <!-- Navbar content -->
       <div class="collapse navbar-collapse" id="navbarContent">
         <!-- Centered navigation links -->
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('fabric') }}">Brain Break</a></li>
         </ul>
-  
+
         <!-- Right-aligned user dropdown and dark mode toggle -->
         <ul class="navbar-nav ms-auto">
           {% if user_name %}
@@ -49,7 +91,7 @@
           {% else %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('auth_bp.login') }}">Login</a></li>
           {% endif %}
-  
+        </ul>
         <!-- Dark mode toggle with sun and moon icons -->
         <li class="nav-item">
           <div class="form-check form-switch ms-3 d-flex align-items-center">
@@ -59,15 +101,15 @@
             <input class="form-check-input ms-2" type="checkbox" id="darkModeToggle">
           </div>
         </li>
-        </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Banner -->
+  <!-- Banner Section -->
   <div class="banner">
-    <div class="banner-text animate__animated animate__fadeInDown">
+    <div class="text-center animate__animated animate__fadeInDown">
       <h2>Where Stories Come to Life</h2>
+      <p>Explore, imagine, and create your own adventures.</p>
     </div>
   </div>
 

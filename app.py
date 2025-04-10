@@ -37,23 +37,22 @@ def root_redirect():
         return redirect(url_for("home"))
     return redirect(url_for("auth_bp.login"))
 
+@app.route("/by_genres")
+@login_required
+def by_genres():
+    genres = get_books_by_genres()
+    return render_template("by_genres.html", genres=genres)
+
+@app.route("/book/<int:book_id>")
+def book_detail(book_id):
+    book, text_url = get_book_details(book_id)
+    return render_template("book.html", book=book, text_url=text_url)
+
 @app.route("/home")
 @login_required
 def home():
     books = get_featured_books()
     return render_template("home.html", books=books, user_name=session.get("user_name"))
-
-@app.route("/by_genres")
-@login_required
-def by_genres():
-    genres = get_books_by_genres()
-    return render_template("by_genres.html", genres=genres, user_name=session.get("user_name"))
-
-@app.route("/book/<int:book_id>")
-@login_required
-def book_detail(book_id):
-    book, text_url = get_book_details(book_id)
-    return render_template("book.html", book=book, text_url=text_url, user_name=session.get("user_name"))
 
 @app.route("/audiobooks")
 @login_required
@@ -70,6 +69,10 @@ def audiobook_detail(book_id):
     # Map Firestore field 'cover_image_url' to template variable 'cover_url'
     book['cover_url'] = book.get('cover_image_url')
     return render_template("audiobook_detail.html", book=book, audio_url=book.get("audio_url"), user_name=session.get("user_name"))
+
+@app.route("/fabric")
+def fabric():
+    return render_template("fabric.html", user_name=session.get("user_name"))
 
 @app.route("/generate_story")
 @login_required

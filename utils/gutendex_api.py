@@ -19,23 +19,17 @@ def fetch_books_gutendex(search_query, rows=50, page=1):
         return []
 
 def get_featured_books():
-    # Fetch more books for the home page
-    return fetch_books_gutendex("children's literature", rows=16, page=1)
+    return fetch_books_gutendex("children's literature", rows=8, page=1)
 
 def get_books_by_genres():
-    # Add more genres and fetch books for each genre
     genres = {
         "Fiction": {
             "Adventure": fetch_books_gutendex("adventure fiction"),
             "Fantasy": fetch_books_gutendex("fantasy fiction"),
-            "Mystery": fetch_books_gutendex("mystery fiction"),
-            "Science Fiction": fetch_books_gutendex("science fiction"),
         },
         "Non-Fiction": {
             "Biography": fetch_books_gutendex("biography"),
             "History": fetch_books_gutendex("history non-fiction"),
-            "Science": fetch_books_gutendex("science non-fiction"),
-            "Philosophy": fetch_books_gutendex("philosophy"),
         }
     }
     return genres
@@ -48,7 +42,6 @@ def get_book_details(book_id):
         book = response.json()
         text_url = None
 
-        # Safely get the formats dictionary
         formats = book.get("formats", {})
         for key, value in formats.items():
             if "text/plain" in key:
@@ -56,6 +49,6 @@ def get_book_details(book_id):
                 break
 
         return book, text_url
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching book details for book_id {book_id}: {e}")
+    except Exception as e:
+        print("Error fetching book details:", e)
         return None, None

@@ -27,12 +27,7 @@
           <li class="nav-item"><a class="nav-link" href="{{ url_for('by_genres') }}">By Genres</a></li>
           <li class="nav-item"><a class="nav-link active" href="{{ url_for('audiobooks') }}">Audiobooks</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_story_page') }}">Generate a Story</a></li>
-          {% if user_name %}
-          <li class="nav-item"><a class="nav-link" href="#">{{ user_name }}</a></li>
-          <a href="{{ url_for('auth_bp.logout') }}">Logout</a>
-          {% else %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-          {% endif %}        
+          <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
         </ul>
         <div class="toggle-switch ms-3">
           <input type="checkbox" id="darkModeToggle">
@@ -46,7 +41,6 @@
       </div>
     </div>
   </nav>
-  
   <div class="container mt-4">
     <h2>Browse by Genres</h2>
     {% for main_genre, sub_genres in genres.items() %}
