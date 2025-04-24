@@ -1,6 +1,5 @@
 import pyrebase
 
-# Your Firebase Web config
 firebase_config = {
     "apiKey": "AIzaSyAHjDQsqvU-OXjpNIzgg8nQrz6m5YWOL6o",
     "authDomain": "tootales.firebaseapp.com",

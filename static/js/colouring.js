@@ -1,13 +1,13 @@
 let canvas = new fabric.Canvas('c');
 
-// Load the selected SVG onto the canvas
+
 function loadSelectedSVG() {
   const selector = document.getElementById('svg-selector');
   const svgPath = selector.value;
 
   fabric.loadSVGFromURL(svgPath, function (objects, options) {
     const svg = fabric.util.groupSVGElements(objects, options);
-    canvas.clear(); // Clear the canvas before loading a new SVG
+    canvas.clear(); 
     canvas.add(svg);
     canvas.centerObject(svg);
     svg.setCoords();
@@ -29,7 +29,7 @@ document.getElementById('color-picker').addEventListener('click', function (e) {
   }
 });
 
-// Save the canvas as an image
+
 function saveImage() {
   const dataURL = canvas.toDataURL({
     format: 'png',

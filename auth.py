@@ -1,25 +1,24 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, jsonify
-from firebase_config import auth  # Pyrebase config (for Email/Password)
+from firebase_config import auth 
 import firebase_admin
 from firebase_admin import credentials, firestore, auth as admin_auth
 from dotenv import load_dotenv
 import os
 
-# Load environment variables
+
 load_dotenv()
 
-# Initialize Firebase Admin if not already initialized
 if not firebase_admin._apps:
     cred = credentials.Certificate("firebase_key.json")
     firebase_admin.initialize_app(cred)
 
-# Initialize Firestore client
+
 db = firestore.client()
 
-# Create the authentication blueprint
+
 auth_bp = Blueprint("auth_bp", __name__)
 
-# --------- Email/Password Signup ----------
+
 @auth_bp.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -27,10 +26,10 @@ def signup():
         password = request.form.get("password")
         username = request.form.get("username")
         try:
-            # Create user with Email/Password using Pyrebase
+
             user = auth.create_user_with_email_and_password(email, password)
             uid = user["localId"]
-            # Save additional user info in Firestore
+
             db.collection("users").document(uid).set({
                 "username": username,
                 "email": email,
@@ -78,7 +77,6 @@ def login():
             return render_template("login.html", error=error_message)
     return render_template("login.html")
 
-# --------- Google Sign-In ----------
 @auth_bp.route("/google_sign_in", methods=["POST"])
 def google_sign_in():
     """
@@ -90,11 +88,11 @@ def google_sign_in():
     if not id_token:
         return jsonify({"error": "Missing ID token"}), 400
     try:
-        # Verify the ID token using Firebase Admin SDK
+
         decoded_token = admin_auth.verify_id_token(id_token)
         uid = decoded_token["uid"]
         
-        # Try to get the user's Firestore document; if not found, create one.
+
         user_ref = db.collection("users").document(uid)
         if not user_ref.get().exists:
             username = decoded_token.get("name", "Google User")

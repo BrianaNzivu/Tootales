@@ -5,7 +5,6 @@ from firebase_admin import credentials, firestore
 cred = credentials.Certificate('firebase_key.json')
 firebase_admin.initialize_app(cred)
 
-# Get Firestore client
 db = firestore.client()
 
 def get_all_audiobooks():
@@ -16,8 +15,8 @@ def get_all_audiobooks():
         books = []
         for doc in docs:
             book = doc.to_dict()
-            book['id'] = doc.id  # Include the document ID for each book
-            book['cover_url'] = doc.get('cover_image_url')  # Fetch cover_image_url from Firestore
+            book['id'] = doc.id 
+            book['cover_url'] = doc.get('cover_image_url')  
             books.append(book)
 
         return books
@@ -28,12 +27,12 @@ def get_all_audiobooks():
     
 def get_audiobook_by_id(book_id):
     try:
-        # Fetch a single book document by its ID
+
         book_ref = db.collection('audiobooks').document(book_id)
         book_doc = book_ref.get()
 
         if book_doc.exists:
-            return book_doc.to_dict()  # Return the book details as a dictionary
+            return book_doc.to_dict() 
         else:
             return None  # Book not found
     except Exception as e:
